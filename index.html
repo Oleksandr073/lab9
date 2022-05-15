@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="img/favicon-16x16.png">
+    <title>Adopt a Dog</title>
+</head>
+
+<body>
+
+<section class="dog">
+        <div class="dog_item" style="visibility: hidden;">
+            <div class="dog_photo">
+               <img src="" alt="photo of a dog">
+            </div>
+            <div class="dog_info">
+                <h2 class="dog_name"></h2>
+                <h3 class="dog_sex"></h3>
+            </div>
+        </div>
+</section>
+
+<div class="modal" hidden>
+    <div class="modal_body">
+        <div class="modal_photo">
+           <img src="" alt="photo of a dog">
+        </div>
+        <div class="modal_info">
+            <h2 class="modal_name"></h2>
+            <p class="modal_suptitle">Sex</p>
+            <h3 class="modal_text sex"></h3>
+            <p class="modal_suptitle">Age</p>
+            <h3 class="modal_text age"></h3>
+            <p class="modal_suptitle">Personality</p>
+            <p class="modal_text description"></p>
+            <button class="modal_btn">
+                <svg class="modal_ico">
+                    <use xlink:href="svg/sprite.svg#phone"></use>
+                </svg>
+                Adopt Me
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+
+</html>
