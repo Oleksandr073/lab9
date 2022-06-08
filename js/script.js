@@ -2,39 +2,29 @@
 
 const url = 'https://usersdogs.dmytrominochkin.cloud/';
 
-class Dog {
-    constructor(id, name, sex, age, description, src) {
-        this.id = id;
-        this.name = name;
-        this.sex = sex.toLowerCase().replace(/\w/, c => c.toUpperCase());
-        this.age = age; //
-        this.description = description; //
-        this.src = src;
-    }
-
-    createDogCard() {
-        const parent = document.querySelector('.dogs');
-        parent.innerHTML += `
-            <li class="dog_item" id="${this.id}">
-                <div class="dog_photo">
-                    <img src=${this.src} alt="photo of a dog ${this.name}">
-                </div>
-                <div class="dog_info">
-                    <h2 class="dog_name">${this.name}</h2>
-                    <h3 class="dog_sex">${this.sex}</h3>
-                </div>
-            </li>
-        `;
-    }
-}
-
 fetch(`${url}dogs`)
 .then(response =>  response.ok ? response.json() : Promise.reject())
 .then(response => {
-    
-    response.forEach(({id, title, sex, age, description, dogImage}) => {
-        new Dog(id, title, sex, age, description, url + dogImage).createDogCard();
-    });
+
+    function createDogCard(response) {
+        response.forEach(({ id, title, sex, age, description, dogImage }) => {
+            console.log(id, title, sex, age, description, dogImage);
+            const parent = document.querySelector('.dogs');
+            parent.innerHTML += `
+                <li class="dog_item" id="${id}">
+                    <div class="dog_photo">
+                        <img src=${url + dogImage} alt="photo of a dog ${title}">
+                    </div>
+                    <div class="dog_info">
+                        <h2 class="dog_name">${title}</h2>
+                        <h3 class="dog_sex">${sex.toLowerCase().replace(/\w/, c => c.toUpperCase()) }</h3>
+                    </div>
+                </li>
+            `;
+        });
+    }  
+
+    createDogCard(response);
 
     const modal = document.getElementsByClassName('modal');
     const modalBody = document.getElementsByClassName('modal_body');
