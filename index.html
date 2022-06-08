@@ -9,8 +9,29 @@
 
 <body>
 
-<section class="dog">
-        <div class="dog_item" style="visibility: hidden;">
+<div class="loader">
+    <svg version="1.1" viewBox="-58 -58 116 116" xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink">
+        <g stroke-linecap="round" stroke-width="15">
+            <path id="a" d="m0 35 0,14" />
+            <use transform="rotate(210)" xlink:href="#a" stroke="#f0f0f0" />
+            <use transform="rotate(240)" xlink:href="#a" stroke="#ebebeb" />
+            <use transform="rotate(270)" xlink:href="#a" stroke="#d3d3d3" />
+            <use transform="rotate(300)" xlink:href="#a" stroke="#bcbcbc" />
+            <use transform="rotate(330)" xlink:href="#a" stroke="#a4a4a4" />
+            <use transform="rotate(0)" xlink:href="#a" stroke="#8d8d8d" />
+            <use transform="rotate(30)" xlink:href="#a" stroke="#757575" />
+            <use transform="rotate(60)" xlink:href="#a" stroke="#5e5e5e" />
+            <use transform="rotate(90)" xlink:href="#a" stroke="#464646" />
+            <use transform="rotate(120)" xlink:href="#a" stroke="#2f2f2f" />
+            <use transform="rotate(150)" xlink:href="#a" stroke="#171717" />
+            <use transform="rotate(180)" xlink:href="#a" stroke="#000" />
+        </g>
+    </svg>
+</div>
+
+<ul class="dogs">
+        <!-- <li class="dog_item" style="visibility: hidden;">
             <div class="dog_photo">
                <img src="" alt="photo of a dog">
             </div>
@@ -18,11 +39,11 @@
                 <h2 class="dog_name"></h2>
                 <h3 class="dog_sex"></h3>
             </div>
-        </div>
-</section>
+        </li> -->
+</ul>
 
-<div class="modal" hidden>
-    <div class="modal_body">
+<div class="modal hide">
+    <!-- <div class="modal_body">
         <div class="modal_photo">
            <img src="" alt="photo of a dog">
         </div>
@@ -35,13 +56,16 @@
             <p class="modal_suptitle">Personality</p>
             <p class="modal_text description"></p>
             <button class="modal_btn">
+                <svg class="modal_ico" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <path d="M511.2 387l-23.25 100.8c-3.266 14.25-15.79 24.22-30.46 24.22C205.2 512 0 306.8 0 54.5c0-14.66 9.969-27.2 24.22-30.45l100.8-23.25C139.7-2.602 154.7 5.018 160.8 18.92l46.52 108.5c5.438 12.78 1.77 27.67-8.98 36.45L144.5 207.1c33.98 69.22 90.26 125.5 159.5 159.5l44.08-53.8c8.688-10.78 23.69-14.51 36.47-8.975l108.5 46.51C506.1 357.2 514.6 372.4 511.2 387z" />
+                </svg>
                 <svg class="modal_ico">
                     <use xlink:href="svg/sprite.svg#phone"></use>
                 </svg>
                 Adopt Me
             </button>
         </div>
-    </div>
+    </div> -->
 </div>
 
 <script src="js/script.js"></script>

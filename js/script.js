@@ -1,38 +1,43 @@
+'use strict';
 
 const url = 'https://usersdogs.dmytrominochkin.cloud/';
 
+class Dog {
+    constructor(id, name, sex, age, description, src) {
+        this.id = id;
+        this.name = name;
+        this.sex = sex.toLowerCase().replace(/\w/, c => c.toUpperCase());
+        this.age = age; //
+        this.description = description; //
+        this.src = src;
+    }
+
+    createDogCard() {
+        const parent = document.querySelector('.dogs');
+        parent.innerHTML += `
+            <li class="dog_item" id="${this.id}">
+                <div class="dog_photo">
+                    <img src=${this.src} alt="photo of a dog ${this.name}">
+                </div>
+                <div class="dog_info">
+                    <h2 class="dog_name">${this.name}</h2>
+                    <h3 class="dog_sex">${this.sex}</h3>
+                </div>
+            </li>
+        `;
+    }
+}
+
 fetch(`${url}dogs`)
-.then(response => response.json())
-.then(massiv => {
+.then(response =>  response.ok ? response.json() : Promise.reject())
+.then(response => {
+    
+    response.forEach(({id, title, sex, age, description, dogImage}) => {
+        new Dog(id, title, sex, age, description, url + dogImage).createDogCard();
+    });
 
-    const dog = document.querySelector('.dog');
-    const dogs = document.getElementsByClassName('dog_item');
-    dogs[0].style.visibility = 'visible';
-
-    if (massiv.length == 0) dogs[0].style.visibility = 'hidden';
-    for (let i = 1; i < massiv.length; i++) {
-        dog.append(dogs[0].cloneNode(true));
-    }
-
-    const dogName = document.querySelectorAll('.dog_name');
-    const dogSex = document.querySelectorAll('.dog_sex');
-    const dogPhoto = document.querySelectorAll('.dog_photo img');
-
-    for (let i = 0; i < massiv.length; i++) {
-        dogs[i].id = massiv[i].id.toString();
-        dogName[i].textContent = massiv[i].title;
-        dogSex[i].textContent = massiv[i].sex.toLowerCase().replace(/\w/, c => `${c.toUpperCase()}`);
-        dogPhoto[i].src = url + massiv[i].dogImage;
-        dogPhoto[i].setAttribute('alt', `photo of a dog ${massiv[i].title}`);
-    }
-
-    const modal = document.querySelector('.modal');
-    const modalBody = document.querySelector('.modal_body');
-    const modalPhoto = document.querySelector('.modal_photo img');
-    const modalName = document.querySelector('.modal_name');
-    const modalSex = document.querySelector('.sex');
-    const modalAge = document.querySelector('.age');
-    const modalDesc = document.querySelector('.description');
+    const modal = document.getElementsByClassName('modal');
+    const modalBody = document.getElementsByClassName('modal_body');
 
     let scrollHeight = Math.max(
         document.body.scrollHeight, document.documentElement.scrollHeight,
@@ -40,36 +45,56 @@ fetch(`${url}dogs`)
         document.body.clientHeight, document.documentElement.clientHeight
     );
 
-    modal.style.height = `${scrollHeight}px`;
-
     function modalInfo(id) {
-        modalPhoto.src = url + massiv[id - 1].dogImage;
-        modalPhoto.setAttribute('alt', `photo of a dog ${massiv[id - 1].title}`);
-        modalName.textContent = massiv[id - 1].title;
-        modalSex.textContent = massiv[id - 1].sex.toLowerCase().replace(/\w/, c => `${c.toUpperCase()}`);
-        modalAge.textContent = massiv[id - 1].age;
-        modalDesc.textContent = massiv[id - 1].description;
+        modal[0].style.height = `${scrollHeight}px`;
+        modal[0].innerHTML = `
+            <div class="modal_body active" style="top: ${window.pageYOffset + 30}px">
+                <div class="modal_photo">
+                <img src="${url + response[id - 1].dogImage}" alt="photo of a dog ${response[id - 1].title}">
+                </div>
+                <div class="modal_info">
+                    <h2 class="modal_name">${response[id - 1].title}</h2>
+                    <p class="modal_suptitle">Sex</p>
+                    <h3 class="modal_text sex">${response[id - 1].sex.toLowerCase().replace(/\w/, c => c.toUpperCase())}</h3>
+                    <p class="modal_suptitle">Age</p>
+                    <h3 class="modal_text age">${response[id - 1].age}</h3>
+                    <p class="modal_suptitle">Personality</p>
+                    <p class="modal_text description">${response[id - 1].description}</p>
+                    <button class="modal_btn">
+                        <svg class="modal_ico" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M511.2 387l-23.25 100.8c-3.266 14.25-15.79 24.22-30.46 24.22C205.2 512 0 306.8 0 54.5c0-14.66 9.969-27.2 24.22-30.45l100.8-23.25C139.7-2.602 154.7 5.018 160.8 18.92l46.52 108.5c5.438 12.78 1.77 27.67-8.98 36.45L144.5 207.1c33.98 69.22 90.26 125.5 159.5 159.5l44.08-53.8c8.688-10.78 23.69-14.51 36.47-8.975l108.5 46.51C506.1 357.2 514.6 372.4 511.2 387z"/></svg>
+                        Adopt Me
+                    </button>
+                </div>
+            </div>
+        `;
     }
 
     document.addEventListener("click", function (event) {
         if (event.target.closest('.dog_item')) {
             modalInfo(Number(event.target.id));
-            modalBody.style.top = window.pageYOffset + 30 + 'px';
-            modal.removeAttribute('hidden');
+            modal[0].classList.remove('hide');
         }
         else if (!event.target.closest('.modal_body')) {
-            modal.setAttribute('hidden', '');
+            modalBody[0].classList.remove('active');
+            modal[0].classList.add('hide');
         }
     });
 
     document.addEventListener('keyup', function (event) {
-        if (event.code === 'Escape') {
-            modal.setAttribute('hidden', '');
+        if (event.code === 'Escape' && !modal[0].classList.contains('hide')) {
+            modalBody[0].classList.remove('active');
+            modal[0].classList.add('hide');
         }
     });
 
 })
 .catch(() => {
-    document.querySelector('.dog_item').style.visibility = 'hidden';
-    document.querySelector('body').style.backgroundColor = 'red';
+    document.querySelector('body').innerHTML = `
+        <div class="error">
+            <p>Error</p>
+        </div>
+    `; 
+})
+.finally(() => {
+    document.querySelector('.loader').style.display = 'none';
 })
