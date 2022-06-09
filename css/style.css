@@ -24,7 +24,7 @@ ul {
 /* loader */
 
 .loader {
-    margin: 50px auto;
+    margin: 70px auto;
     width: 100px;
     height: 100px;
 }
@@ -47,7 +47,7 @@ ul {
 /* error */
 
 .error {
-    margin-top: 50px;
+    margin-top: 20px;
     text-align: center;
     font-size: 48px;
     font-weight: 700;
