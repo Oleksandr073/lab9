@@ -1,25 +1,36 @@
 'use strict';
 
-const url = 'https://usersdogs.dmytrominochkin.cloud/2';
+const BASE_API_URL = 'https://usersdogs.dmytrominochkin.cloud/';
 
-async function callApi(url) {
-    return  await fetch(`${url}dogs`)
+async function callApi(endpoint) {
+
+    const url = BASE_API_URL + endpoint;
+
+    return  await fetch(url)
             .then(response => response.ok ? response.json() : Promise.reject(Error('Failed to load data')))
             .then(response => response.length ? response : Promise.reject(Error('Failed to load data')))
-            .catch((error) => {
-                console.warn(error);
-                document.querySelector('body').innerHTML += `
-                        <div class="error">
-                            <p>Failed to load data</p>
-                        </div>
-                    `;
-            })
-            .finally(() => {
-                document.querySelector('.loader').style.display = 'none';
-            }); 
+            .catch((error) => {throw error});
 }
 
-callApi(url).then(response => {
+async function startApp() {
+    try {
+        const endpoint = 'dogs';
+        const response = await callApi(endpoint);
+
+        buildPage(response);
+    } catch (error) {
+        console.warn(error);
+        document.querySelector('body').innerHTML += `
+            <div class="error">
+                <p>Failed to load data</p>
+            </div>
+        `;
+    } finally {
+        document.querySelector('.loader').style.display = 'none';
+    }
+}
+
+function buildPage(response) {
 
     function createDogCard(response) {
         response.forEach(({ id, title, sex, age, description, dogImage }) => {
@@ -27,7 +38,7 @@ callApi(url).then(response => {
             parent.innerHTML += `
                 <li class="dog_item" id="${id}">
                     <div class="dog_photo">
-                        <img src=${url + dogImage} alt="photo of a dog ${title}">
+                        <img src=${BASE_API_URL + dogImage} alt="photo of a dog ${title}">
                     </div>
                     <div class="dog_info">
                         <h2 class="dog_name">${title}</h2>
@@ -50,7 +61,7 @@ callApi(url).then(response => {
         modal[0].innerHTML = `
             <div class="modal_body active" style="top: ${window.pageYOffset + 30}px">
                 <div class="modal_photo">
-                <img src="${url + dogImage}" alt="photo of a dog ${title}">
+                <img src="${BASE_API_URL + dogImage}" alt="photo of a dog ${title}">
                 </div>
                 <div class="modal_info">
                     <h2 class="modal_name">${title}</h2>
@@ -89,5 +100,6 @@ callApi(url).then(response => {
             modal[0].classList.add('hide');
         }
     });
+}
 
-})
+startApp();
