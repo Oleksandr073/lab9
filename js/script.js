@@ -85,7 +85,7 @@ function buildPage(response) {
 
     document.addEventListener("click", function (event) {
         if (event.target.closest('.dog_item')) {
-            modalInfo(response[event.target.id - 1]);
+            modalInfo(response[event.target.closest('.dog_item').id - 1]);
             modal[0].classList.remove('hide');
         }
         else if (!event.target.closest('.modal_body')) {
