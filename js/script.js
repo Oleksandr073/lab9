@@ -51,6 +51,9 @@ function buildPage(response) {
 
     createDogCard(response);
 
+    const modal = document.getElementsByClassName('modal');
+    const modalBody = document.getElementsByClassName('modal_body');
+
     function modalInfo({ id, title, sex, age, description, dogImage }) {
         const scrollHeight = Math.max(
             document.body.scrollHeight, document.documentElement.scrollHeight,
@@ -79,9 +82,6 @@ function buildPage(response) {
             </div>
         `;
     }
-
-    const modal = document.getElementsByClassName('modal');
-    const modalBody = document.getElementsByClassName('modal_body');
 
     document.addEventListener("click", function (event) {
         if (event.target.closest('.dog_item')) {
